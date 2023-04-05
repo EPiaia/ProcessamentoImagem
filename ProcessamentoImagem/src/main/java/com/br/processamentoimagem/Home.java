@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -24,6 +25,13 @@ public class Home extends javax.swing.JFrame {
     public Home() {
         initComponents();
 
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         btnCarregarImg.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 var filter = new FileNameExtensionFilter("Imagens", "jpg", "jpeg", "png", "bmp", "tiff");
@@ -37,7 +45,6 @@ public class Home extends javax.swing.JFrame {
                         BufferedImage img = ImageIO.read(selectedFile);
                         img1 = new Imagem(img);
                         labelImg1.setIcon(new ImageIcon(img1.getImg()));
-                        labelImg2.setIcon(new ImageIcon(img1.getMatrixImage()));
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -56,8 +63,12 @@ public class Home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnCarregarImg = new javax.swing.JButton();
-        labelImg2 = new javax.swing.JLabel();
+        labelResultado = new javax.swing.JLabel();
         labelImg1 = new javax.swing.JLabel();
+        btnEscalaCinza = new javax.swing.JButton();
+        btnBinario = new javax.swing.JButton();
+        tfBrilho = new javax.swing.JTextField();
+        btnBrilho = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,6 +76,27 @@ public class Home extends javax.swing.JFrame {
         btnCarregarImg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCarregarImgActionPerformed(evt);
+            }
+        });
+
+        btnEscalaCinza.setText("Escala de Cinza");
+        btnEscalaCinza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEscalaCinzaActionPerformed(evt);
+            }
+        });
+
+        btnBinario.setText("Binário");
+        btnBinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBinarioActionPerformed(evt);
+            }
+        });
+
+        btnBrilho.setText("Brilho");
+        btnBrilho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBrilhoActionPerformed(evt);
             }
         });
 
@@ -76,34 +108,45 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCarregarImg, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelImg2, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(266, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
-                    .addComponent(labelImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(256, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnEscalaCinza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBinario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tfBrilho)
+                            .addComponent(btnBrilho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(labelResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(379, 379, 379)
-                .addComponent(btnCarregarImg)
-                .addGap(18, 18, 18)
-                .addComponent(labelImg2, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(369, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnEscalaCinza)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBinario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfBrilho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
+                        .addComponent(btnBrilho))
+                    .addComponent(labelResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCarregarImg)
+                .addContainerGap(379, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,6 +159,19 @@ public class Home extends javax.swing.JFrame {
     private void btnCarregarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarregarImgActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCarregarImgActionPerformed
+
+    private void btnEscalaCinzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscalaCinzaActionPerformed
+        labelResultado.setIcon(new ImageIcon(img1.getGrayImage()));
+    }//GEN-LAST:event_btnEscalaCinzaActionPerformed
+
+    private void btnBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinarioActionPerformed
+        labelResultado.setIcon(new ImageIcon(img1.getBinaryImage()));
+    }//GEN-LAST:event_btnBinarioActionPerformed
+
+    private void btnBrilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrilhoActionPerformed
+        double brilho = Double.valueOf(tfBrilho.getText());
+        labelResultado.setIcon(new ImageIcon(img1.getBrightenedImage(brilho)));
+    }//GEN-LAST:event_btnBrilhoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,9 +209,13 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBinario;
+    private javax.swing.JButton btnBrilho;
     private javax.swing.JButton btnCarregarImg;
+    private javax.swing.JButton btnEscalaCinza;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelImg1;
-    private javax.swing.JLabel labelImg2;
+    private javax.swing.JLabel labelResultado;
+    private javax.swing.JTextField tfBrilho;
     // End of variables declaration//GEN-END:variables
 }

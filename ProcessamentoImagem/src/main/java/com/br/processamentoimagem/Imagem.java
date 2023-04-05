@@ -40,24 +40,62 @@ public class Imagem implements Serializable {
         }
     }
 
+    public Imagem(int width, int hegiht) {
+        int cols = width;
+        int rows = hegiht;
+
+        this.red = new int[cols][rows];
+        this.green = new int[cols][rows];
+        this.blue = new int[cols][rows];
+        this.alpha = new int[cols][rows];
+    }
+
     public BufferedImage getImg() {
         return img;
+    }
+
+    public void setImg(BufferedImage img) {
+        this.img = img;
     }
 
     public int[][] getRed() {
         return red;
     }
 
+    public void setRed(int[][] red) {
+        this.red = red;
+    }
+
     public int[][] getGreen() {
         return green;
+    }
+
+    public void setGreen(int[][] green) {
+        this.green = green;
     }
 
     public int[][] getBlue() {
         return blue;
     }
 
+    public void setBlue(int[][] blue) {
+        this.blue = blue;
+    }
+
     public int[][] getAlpha() {
         return alpha;
+    }
+
+    public void setAlpha(int[][] alpha) {
+        this.alpha = alpha;
+    }
+
+    public int getWidth() {
+        return this.red.length;
+    }
+
+    public int getHeight() {
+        return this.red[0].length;
     }
 
     public BufferedImage getMatrixImage() {
@@ -73,5 +111,45 @@ public class Imagem implements Serializable {
             }
         }
         return image;
+    }
+
+    public BufferedImage getGrayImage() {
+        int[][] grayMatrix = Tecnicas.rgbToGray(red, green, blue);
+        int width = getWidth();
+        int height = getHeight();
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int grayValue = grayMatrix[x][y];
+                // Setando valores do RED (16) GREEN (8) e BLUE
+                int rgbValue = (grayValue << 16) | (grayValue << 8) | grayValue;
+                image.setRGB(x, y, rgbValue);
+            }
+        }
+        return image;
+    }
+
+    public BufferedImage getBinaryImage() {
+        int[][] binaryMatrix = Tecnicas.rgbToBinary(red, green, blue, 128);
+        int width = getWidth();
+        int height = getHeight();
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int binaryValue = binaryMatrix[x][y];
+                int rgbValue = binaryValue == 0 ? 0x000000 : 0xFFFFFF;
+                image.setRGB(x, y, rgbValue);
+            }
+        }
+        return image;
+    }
+
+    public BufferedImage getBrightenedImage(double bright) {
+        bright = (bright / 100) + 1;
+        return Tecnicas.rgbBrigthness(red, green, blue, bright).getMatrixImage();
     }
 }
