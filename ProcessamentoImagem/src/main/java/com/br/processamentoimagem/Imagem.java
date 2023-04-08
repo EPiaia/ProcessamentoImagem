@@ -150,6 +150,11 @@ public class Imagem implements Serializable {
 
     public BufferedImage getBrightenedImage(double bright) {
         bright = (bright / 100) + 1;
-        return Tecnicas.rgbBrigthness(red, green, blue, bright).getMatrixImage();
+        return Tecnicas.rgbBrigthness(this, bright).getMatrixImage();
+    }
+
+    public BufferedImage getShadowedImage(double bright) {
+        bright = 1 - (bright / 100);
+        return Tecnicas.rgbBrigthness(this, bright).getMatrixImage();
     }
 }

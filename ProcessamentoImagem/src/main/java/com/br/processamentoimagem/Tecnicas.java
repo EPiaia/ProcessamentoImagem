@@ -63,7 +63,12 @@ public class Tecnicas implements Serializable {
         return binaryMatrix;
     }
 
-    public static Imagem rgbBrigthness(int[][] red, int[][] green, int[][] blue, double bright) {
+    public static Imagem rgbBrigthness(Imagem originalImage, double bright) {
+        int[][] red = originalImage.getRed();
+        int[][] green = originalImage.getGreen();
+        int[][] blue = originalImage.getBlue();
+        int[][] alpha = originalImage.getAlpha();
+
         int width = red.length;
         int height = red[0].length;
 
@@ -85,6 +90,7 @@ public class Tecnicas implements Serializable {
                 resultado.getRed()[x][y] = valR;
                 resultado.getGreen()[x][y] = valG;
                 resultado.getBlue()[x][y] = valB;
+                resultado.getAlpha()[x][y] = alpha[x][y];
             }
         }
 
