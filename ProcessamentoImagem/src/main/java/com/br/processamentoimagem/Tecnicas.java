@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class Tecnicas implements Serializable {
 
-    public static int getValueInBounds(int value) {
+    private static int getValueInBounds(int value) {
         if (value < 0) {
             return 0;
         }
@@ -16,6 +16,13 @@ public class Tecnicas implements Serializable {
             return 255;
         }
         return value;
+    }
+
+    private static int getMaxValue(int value1, int value2) {
+        if (value1 > value2) {
+            return value1;
+        }
+        return value2;
     }
 
     public static int[][] rgbToGray(int[][] red, int[][] green, int[][] blue) {
@@ -63,37 +70,42 @@ public class Tecnicas implements Serializable {
         return binaryMatrix;
     }
 
-    public static Imagem rgbBrigthness(Imagem originalImage, double bright) {
-        int[][] red = originalImage.getRed();
-        int[][] green = originalImage.getGreen();
-        int[][] blue = originalImage.getBlue();
-        int[][] alpha = originalImage.getAlpha();
-
-        int width = red.length;
-        int height = red[0].length;
-
-        Imagem resultado = new Imagem(width, height);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int valMatrizR = red[x][y];
-                int valMatrizG = green[x][y];
-                int valMatrizB = blue[x][y];
-
-                int valR = (int) Math.round(valMatrizR * bright);
-                valR = getValueInBounds(valR);
-                int valG = (int) Math.round(valMatrizG * bright);
-                valG = getValueInBounds(valG);
-                int valB = (int) Math.round(valMatrizB * bright);
-                valB = getValueInBounds(valB);
-
-                resultado.getRed()[x][y] = valR;
-                resultado.getGreen()[x][y] = valG;
-                resultado.getBlue()[x][y] = valB;
-                resultado.getAlpha()[x][y] = alpha[x][y];
-            }
+    private static int[][] operationInTwoMatrixes(int[][] matrix1, int[][] matrix2, Operation operation) {
+        int maxWidth = getMaxValue(matrix1.length, matrix2.length);
+        int minWidth = getMaxValue(matrix1.length, matrix2.length);
+        int maxHeight = getMaxValue(matrix1[0].length, matrix2[0].length);
+        int minHeight = getMaxValue(matrix1[0].length, matrix2[0].length);
+        int[][] result = new int[maxWidth][maxHeight];
+        int[][] widerMatrix;
+        int[][] tallerMatrix;
+        if (matrix1.length > matrix2.length) {
+            widerMatrix = matrix1;
+        } else {
+            widerMatrix = matrix2;
+        }
+        if (matrix1[0].length > matrix2[0].length) {
+            tallerMatrix = matrix1;
+        } else {
+            tallerMatrix = matrix2;
         }
 
-        return resultado;
+        for (int y = 0; y < minHeight; y++) {
+            for (int x = 0; x < minWidth; x++) {
+                // Faz as operações
+                result[x][y] = getValueInBounds(operation.getResult(matrix1[x][y], matrix2[x][y]));
+            }
+            for (int x1 = minWidth; x1 < maxWidth; x1++) {
+                // Preenche os valores a direita com os valores da matriz mais larga
+                result[x1][y] = widerMatrix[x1][y];
+            }
+        }
+        // Preenche os valores embaixo com os valores da matriz mais alta
+        for (int y1 = minHeight; y1 < maxHeight; y1++) {
+            for (int x = 0; x < tallerMatrix.length; x++) {
+                result[x][y1] = tallerMatrix[x][y1];
+            }
+        }
+        return result;
     }
+
 }
