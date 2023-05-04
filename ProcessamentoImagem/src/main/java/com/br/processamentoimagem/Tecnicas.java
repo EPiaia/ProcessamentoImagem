@@ -108,4 +108,29 @@ public class Tecnicas implements Serializable {
         return result;
     }
 
+    private static Imagem doOperationInImages(Imagem image1, Imagem image2, Operation operation) {
+        Imagem imageResult = new Imagem();
+        imageResult.setRed(operationInTwoMatrixes(image1.getRed(), image2.getRed(), operation));
+        imageResult.setGreen(operationInTwoMatrixes(image1.getGreen(), image2.getGreen(), operation));
+        imageResult.setBlue(operationInTwoMatrixes(image1.getBlue(), image2.getBlue(), operation));
+        imageResult.setAlpha(operationInTwoMatrixes(image1.getAlpha(), image2.getAlpha(), operation));
+        return imageResult;
+    }
+
+    public static Imagem sumImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.SUM);
+    }
+
+    public static Imagem subtractImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.SUBTRACT);
+    }
+
+    public static Imagem multiplyImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.MULTIPLICATION);
+    }
+
+    public static Imagem divideImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.DIVISION);
+    }
+
 }

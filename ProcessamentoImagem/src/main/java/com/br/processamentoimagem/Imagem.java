@@ -32,7 +32,8 @@ public class Imagem implements Serializable {
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
                 int clr = img.getRGB(x, y);
-                this.alpha[x][y] = (clr >> 24) & 255;
+                //this.alpha[x][y] = (clr >> 24) & 255;
+                this.alpha[x][y] = 255;
                 this.red[x][y] = (clr >> 16) & 255;
                 this.green[x][y] = (clr >> 8) & 255;
                 this.blue[x][y] = clr & 255;
@@ -106,7 +107,8 @@ public class Imagem implements Serializable {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int argb = (alpha[x][y] << 24) | (red[x][y] << 16) | (green[x][y] << 8) | blue[x][y];
+                //int argb = (alpha[x][y] << 24) | (red[x][y] << 16) | (green[x][y] << 8) | blue[x][y];
+                int argb = (255 << 24) | (red[x][y] << 16) | (green[x][y] << 8) | blue[x][y];
                 image.setRGB(x, y, argb);
             }
         }

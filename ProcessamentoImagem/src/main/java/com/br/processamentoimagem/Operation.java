@@ -34,6 +34,9 @@ public enum Operation {
 
         @Override
         public Integer getResult(int value1, int value2) {
+            if (value2 == 0) {
+                return value1;
+            }
             return value1 / value2;
         }
     }, MULTIPLICATION {
@@ -45,6 +48,42 @@ public enum Operation {
         @Override
         public Integer getResult(int value1, int value2) {
             return value1 * value2;
+        }
+    }, AND {
+        @Override
+        public Integer getCode() {
+            return 5;
+        }
+
+        @Override
+        public Integer getResult(int value1, int value2) {
+            boolean v1 = value1 > 0;
+            boolean v2 = value2 > 0;
+            return (v1 && v2) ? 1 : 0;
+        }
+    }, OR {
+        @Override
+        public Integer getCode() {
+            return 6;
+        }
+
+        @Override
+        public Integer getResult(int value1, int value2) {
+            boolean v1 = value1 > 0;
+            boolean v2 = value2 > 0;
+            return (v1 || v2) ? 1 : 0;
+        }
+    }, XOR {
+        @Override
+        public Integer getCode() {
+            return 7;
+        }
+
+        @Override
+        public Integer getResult(int value1, int value2) {
+            boolean v1 = value1 > 0;
+            boolean v2 = value2 > 0;
+            return (v1 ^ v2) ? 1 : 0;
         }
     };
 
