@@ -25,6 +25,13 @@ public class Tecnicas implements Serializable {
         return value2;
     }
 
+    private static int getMinValue(int value1, int value2) {
+        if (value1 > value2) {
+            return value2;
+        }
+        return value1;
+    }
+
     public static int[][] rgbToGray(int[][] red, int[][] green, int[][] blue) {
         int width = red.length;
         int height = red[0].length;
@@ -72,9 +79,9 @@ public class Tecnicas implements Serializable {
 
     private static int[][] operationInTwoMatrixes(int[][] matrix1, int[][] matrix2, Operation operation) {
         int maxWidth = getMaxValue(matrix1.length, matrix2.length);
-        int minWidth = getMaxValue(matrix1.length, matrix2.length);
+        int minWidth = getMinValue(matrix1.length, matrix2.length);
         int maxHeight = getMaxValue(matrix1[0].length, matrix2[0].length);
-        int minHeight = getMaxValue(matrix1[0].length, matrix2[0].length);
+        int minHeight = getMinValue(matrix1[0].length, matrix2[0].length);
         int[][] result = new int[maxWidth][maxHeight];
         int[][] widerMatrix;
         int[][] tallerMatrix;
