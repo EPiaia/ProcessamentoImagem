@@ -77,7 +77,7 @@ public class Tecnicas implements Serializable {
         return binaryMatrix;
     }
 
-    private static int[][] operationInTwoMatrixes(int[][] matrix1, int[][] matrix2, Operation operation) {
+    private static int[][] operationInTwoMatrixes(int[][] matrix1, int[][] matrix2, Integer coeficient, Operation operation) {
         int maxWidth = getMaxValue(matrix1.length, matrix2.length);
         int minWidth = getMinValue(matrix1.length, matrix2.length);
         int maxHeight = getMaxValue(matrix1[0].length, matrix2[0].length);
@@ -99,7 +99,13 @@ public class Tecnicas implements Serializable {
         for (int y = 0; y < minHeight; y++) {
             for (int x = 0; x < minWidth; x++) {
                 // Faz as operações
-                result[x][y] = getValueInBounds(operation.getResult(matrix1[x][y], matrix2[x][y]));
+                int opResult;
+                if (coeficient == null) {
+                    opResult = operation.getResult(matrix1[x][y], matrix2[x][y]);
+                } else {
+                    opResult = operation.getResult(matrix1[x][y], matrix2[x][y], coeficient);
+                }
+                result[x][y] = getValueInBounds(opResult);
             }
             for (int x1 = minWidth; x1 < maxWidth; x1++) {
                 // Preenche os valores a direita com os valores da matriz mais larga
@@ -115,7 +121,7 @@ public class Tecnicas implements Serializable {
         return result;
     }
 
-    private static int[][] operationSingleMatrix(int[][] matrix, int value, Operation operation) {
+    private static int[][] operationSingleMatrix(int[][] matrix, Integer value, Operation operation) {
         int width = matrix.length;
         int height = matrix[0].length;
         int[][] result = new int[width][height];
@@ -129,34 +135,16 @@ public class Tecnicas implements Serializable {
         return result;
     }
 
-    private static int[][] operationNOTSingleMatrix(int[][] matrix) {
-        int width = matrix.length;
-        int height = matrix[0].length;
-        int[][] result = new int[width][height];
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int value = matrix[x][y];
-                if (value == 255) {
-                    result[x][y] = 0;
-                } else {
-                    result[x][y] = 255;
-                }
-            }
-        }
-        return result;
-    }
-
-    private static Imagem doOperationInImages(Imagem image1, Imagem image2, Operation operation) {
+    private static Imagem doOperationInImages(Imagem image1, Imagem image2, Integer coeficient, Operation operation) {
         Imagem imageResult = new Imagem();
-        imageResult.setRed(operationInTwoMatrixes(image1.getRed(), image2.getRed(), operation));
-        imageResult.setGreen(operationInTwoMatrixes(image1.getGreen(), image2.getGreen(), operation));
-        imageResult.setBlue(operationInTwoMatrixes(image1.getBlue(), image2.getBlue(), operation));
-        imageResult.setAlpha(operationInTwoMatrixes(image1.getAlpha(), image2.getAlpha(), operation));
+        imageResult.setRed(operationInTwoMatrixes(image1.getRed(), image2.getRed(), coeficient, operation));
+        imageResult.setGreen(operationInTwoMatrixes(image1.getGreen(), image2.getGreen(), coeficient, operation));
+        imageResult.setBlue(operationInTwoMatrixes(image1.getBlue(), image2.getBlue(), coeficient, operation));
+        imageResult.setAlpha(operationInTwoMatrixes(image1.getAlpha(), image2.getAlpha(), coeficient, operation));
         return imageResult;
     }
 
-    private static Imagem doOperationInImage(Imagem image, int value, Operation operation) {
+    private static Imagem doOperationInImage(Imagem image, Integer value, Operation operation) {
         Imagem imageResult = new Imagem();
         imageResult.setRed(operationSingleMatrix(image.getRed(), value, operation));
         imageResult.setGreen(operationSingleMatrix(image.getGreen(), value, operation));
@@ -166,14 +154,14 @@ public class Tecnicas implements Serializable {
 
     private static Imagem doOperationNOTInImage(Imagem image) {
         Imagem imageResult = new Imagem();
-        imageResult.setRed(operationNOTSingleMatrix(image.getRed()));
-        imageResult.setGreen(operationNOTSingleMatrix(image.getGreen()));
-        imageResult.setBlue(operationNOTSingleMatrix(image.getBlue()));
+        imageResult.setRed(operationSingleMatrix(image.getRed(), null, Operation.NOT));
+        imageResult.setGreen(operationSingleMatrix(image.getGreen(), null, Operation.NOT));
+        imageResult.setBlue(operationSingleMatrix(image.getBlue(), null, Operation.NOT));
         return imageResult;
     }
 
     public static Imagem sumImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.SUM);
+        return doOperationInImages(image1, image2, null, Operation.SUM);
     }
 
     public static Imagem sumValue(Imagem image, int value) {
@@ -181,7 +169,7 @@ public class Tecnicas implements Serializable {
     }
 
     public static Imagem subtractImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.SUBTRACT);
+        return doOperationInImages(image1, image2, null, Operation.SUBTRACT);
     }
 
     public static Imagem subtractValue(Imagem image, int value) {
@@ -189,7 +177,7 @@ public class Tecnicas implements Serializable {
     }
 
     public static Imagem multiplyImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.MULTIPLICATION);
+        return doOperationInImages(image1, image2, null, Operation.MULTIPLICATION);
     }
 
     public static Imagem multiplyValue(Imagem image, int value) {
@@ -197,7 +185,7 @@ public class Tecnicas implements Serializable {
     }
 
     public static Imagem divideImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.DIVISION);
+        return doOperationInImages(image1, image2, null, Operation.DIVISION);
     }
 
     public static Imagem divideValue(Imagem image, int value) {
@@ -205,19 +193,27 @@ public class Tecnicas implements Serializable {
     }
 
     public static Imagem operationANDImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.AND);
+        return doOperationInImages(image1, image2, null, Operation.AND);
     }
 
     public static Imagem operationORImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.OR);
+        return doOperationInImages(image1, image2, null, Operation.OR);
     }
 
     public static Imagem operationXORImages(Imagem image1, Imagem image2) {
-        return doOperationInImages(image1, image2, Operation.XOR);
+        return doOperationInImages(image1, image2, null, Operation.XOR);
     }
 
     public static Imagem operationNOTImage(Imagem image1) {
         return doOperationNOTInImage(image1);
+    }
+
+    public static Imagem blendImages(Imagem image1, Imagem image2, Integer coeficient) {
+        return doOperationInImages(image1, image2, coeficient, Operation.BLENDING);
+    }
+
+    public static Imagem negativeImage(Imagem image) {
+        return doOperationInImage(image, null, Operation.NEGATIVE);
     }
 
 }
