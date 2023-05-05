@@ -99,6 +99,10 @@ public class Home extends javax.swing.JFrame {
         btnBinario2 = new javax.swing.JButton();
         btnBinario3 = new javax.swing.JButton();
         btnBinario4 = new javax.swing.JButton();
+        tfAdicao = new javax.swing.JTextField();
+        tfMultiplicacao = new javax.swing.JTextField();
+        tfSubtracao = new javax.swing.JTextField();
+        tfDivisao = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +174,30 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        tfAdicao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfAdicaoActionPerformed(evt);
+            }
+        });
+
+        tfMultiplicacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfMultiplicacaoActionPerformed(evt);
+            }
+        });
+
+        tfSubtracao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfSubtracaoActionPerformed(evt);
+            }
+        });
+
+        tfDivisao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfDivisaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -177,11 +205,6 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnBinario1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBinario2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(labelImgA, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,10 +226,24 @@ public class Home extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnBinario3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnBinario3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tfMultiplicacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(btnBinario4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnBinario1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tfAdicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(btnBinario2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBinario4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfSubtracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfDivisao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,20 +261,25 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(labelResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelImgB, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCarregarImgA)
-                    .addComponent(btnEscalaCinza)
-                    .addComponent(btnCarregarImgB))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCarregarImgB)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCarregarImgA)
+                        .addComponent(btnEscalaCinza)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBinario)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBinario1)
-                    .addComponent(btnBinario2))
+                    .addComponent(btnBinario2)
+                    .addComponent(tfAdicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfSubtracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBinario3)
-                    .addComponent(btnBinario4))
+                    .addComponent(btnBinario4)
+                    .addComponent(tfMultiplicacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfDivisao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(319, Short.MAX_VALUE))
         );
 
@@ -274,20 +316,60 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCarregarImgBActionPerformed
 
     private void btnBinario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinario1ActionPerformed
-        labelResultado.setIcon(new ImageIcon(Tecnicas.sumImages(imgA, imgB).getMatrixImage()));
+        String txt = tfAdicao.getText();
+        if (txt == null || txt.isEmpty()) {
+            labelResultado.setIcon(new ImageIcon(Tecnicas.sumImages(imgA, imgB).getMatrixImage()));
+        } else {
+            int value = Integer.parseInt(txt);
+            labelResultado.setIcon(new ImageIcon(Tecnicas.sumValue(imgA, value).getMatrixImage()));
+        }
     }//GEN-LAST:event_btnBinario1ActionPerformed
 
     private void btnBinario2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinario2ActionPerformed
-        labelResultado.setIcon(new ImageIcon(Tecnicas.subtractImages(imgA, imgB).getMatrixImage()));
+        String txt = tfSubtracao.getText();
+        if (txt == null || txt.isEmpty()) {
+            labelResultado.setIcon(new ImageIcon(Tecnicas.subtractImages(imgA, imgB).getMatrixImage()));
+        } else {
+            int value = Integer.parseInt(txt);
+            labelResultado.setIcon(new ImageIcon(Tecnicas.subtractValue(imgA, value).getMatrixImage()));
+        }
     }//GEN-LAST:event_btnBinario2ActionPerformed
 
     private void btnBinario3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinario3ActionPerformed
-        labelResultado.setIcon(new ImageIcon(Tecnicas.multiplyImages(imgA, imgB).getMatrixImage()));
+        String txt = tfMultiplicacao.getText();
+        if (txt == null || txt.isEmpty()) {
+            labelResultado.setIcon(new ImageIcon(Tecnicas.multiplyImages(imgA, imgB).getMatrixImage()));
+        } else {
+            int value = Integer.parseInt(txt);
+            labelResultado.setIcon(new ImageIcon(Tecnicas.multiplyValue(imgA, value).getMatrixImage()));
+        }
     }//GEN-LAST:event_btnBinario3ActionPerformed
 
     private void btnBinario4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinario4ActionPerformed
-        labelResultado.setIcon(new ImageIcon(Tecnicas.divideImages(imgA, imgB).getMatrixImage()));
+        String txt = tfDivisao.getText();
+        if (txt == null || txt.isEmpty()) {
+            labelResultado.setIcon(new ImageIcon(Tecnicas.divideImages(imgA, imgB).getMatrixImage()));
+        } else {
+            int value = Integer.parseInt(txt);
+            labelResultado.setIcon(new ImageIcon(Tecnicas.divideValue(imgA, value).getMatrixImage()));
+        }
     }//GEN-LAST:event_btnBinario4ActionPerformed
+
+    private void tfAdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfAdicaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfAdicaoActionPerformed
+
+    private void tfMultiplicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMultiplicacaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfMultiplicacaoActionPerformed
+
+    private void tfSubtracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSubtracaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfSubtracaoActionPerformed
+
+    private void tfDivisaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDivisaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfDivisaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -340,5 +422,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel labelImgA;
     private javax.swing.JLabel labelImgB;
     private javax.swing.JLabel labelResultado;
+    private javax.swing.JTextField tfAdicao;
+    private javax.swing.JTextField tfDivisao;
+    private javax.swing.JTextField tfMultiplicacao;
+    private javax.swing.JTextField tfSubtracao;
     // End of variables declaration//GEN-END:variables
 }

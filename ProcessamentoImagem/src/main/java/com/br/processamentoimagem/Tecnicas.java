@@ -108,6 +108,38 @@ public class Tecnicas implements Serializable {
         return result;
     }
 
+    private static int[][] operationSingleMatrix(int[][] matrix, int value, Operation operation) {
+        int width = matrix.length;
+        int height = matrix[0].length;
+        int[][] result = new int[width][height];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Faz as operações
+                result[x][y] = getValueInBounds(operation.getResult(matrix[x][y], value));
+            }
+        }
+        return result;
+    }
+
+    private static int[][] operationNOTSingleMatrix(int[][] matrix) {
+        int width = matrix.length;
+        int height = matrix[0].length;
+        int[][] result = new int[width][height];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int value = matrix[x][y];
+                if (value == 0) {
+                    result[x][y] = 1;
+                } else {
+                    result[x][y] = 0;
+                }
+            }
+        }
+        return result;
+    }
+
     private static Imagem doOperationInImages(Imagem image1, Imagem image2, Operation operation) {
         Imagem imageResult = new Imagem();
         imageResult.setRed(operationInTwoMatrixes(image1.getRed(), image2.getRed(), operation));
@@ -117,20 +149,56 @@ public class Tecnicas implements Serializable {
         return imageResult;
     }
 
+    private static Imagem doOperationInImage(Imagem image, int value, Operation operation) {
+        Imagem imageResult = new Imagem();
+        imageResult.setRed(operationSingleMatrix(image.getRed(), value, operation));
+        imageResult.setGreen(operationSingleMatrix(image.getGreen(), value, operation));
+        imageResult.setBlue(operationSingleMatrix(image.getBlue(), value, operation));
+        return imageResult;
+    }
+
     public static Imagem sumImages(Imagem image1, Imagem image2) {
         return doOperationInImages(image1, image2, Operation.SUM);
+    }
+
+    public static Imagem sumValue(Imagem image, int value) {
+        return doOperationInImage(image, value, Operation.SUM);
     }
 
     public static Imagem subtractImages(Imagem image1, Imagem image2) {
         return doOperationInImages(image1, image2, Operation.SUBTRACT);
     }
 
+    public static Imagem subtractValue(Imagem image, int value) {
+        return doOperationInImage(image, value, Operation.SUBTRACT);
+    }
+
     public static Imagem multiplyImages(Imagem image1, Imagem image2) {
         return doOperationInImages(image1, image2, Operation.MULTIPLICATION);
     }
 
+    public static Imagem multiplyValue(Imagem image, int value) {
+        return doOperationInImage(image, value, Operation.MULTIPLICATION);
+    }
+
     public static Imagem divideImages(Imagem image1, Imagem image2) {
         return doOperationInImages(image1, image2, Operation.DIVISION);
+    }
+
+    public static Imagem divideValue(Imagem image, int value) {
+        return doOperationInImage(image, value, Operation.DIVISION);
+    }
+
+    public static Imagem operationANDImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.AND);
+    }
+
+    public static Imagem operationORImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.OR);
+    }
+
+    public static Imagem operationXORImages(Imagem image1, Imagem image2) {
+        return doOperationInImages(image1, image2, Operation.XOR);
     }
 
 }
