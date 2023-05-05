@@ -59,7 +59,7 @@ public enum Operation {
         public Integer getResult(int value1, int value2) {
             boolean v1 = value1 > 0;
             boolean v2 = value2 > 0;
-            return (v1 && v2) ? 1 : 0;
+            return (v1 && v2) ? 255 : 0;
         }
     }, OR {
         @Override
@@ -71,7 +71,7 @@ public enum Operation {
         public Integer getResult(int value1, int value2) {
             boolean v1 = value1 > 0;
             boolean v2 = value2 > 0;
-            return (v1 || v2) ? 1 : 0;
+            return (v1 || v2) ? 255 : 0;
         }
     }, XOR {
         @Override
@@ -83,7 +83,7 @@ public enum Operation {
         public Integer getResult(int value1, int value2) {
             boolean v1 = value1 > 0;
             boolean v2 = value2 > 0;
-            return (v1 ^ v2) ? 1 : 0;
+            return (v1 ^ v2) ? 255 : 0;
         }
     };
 

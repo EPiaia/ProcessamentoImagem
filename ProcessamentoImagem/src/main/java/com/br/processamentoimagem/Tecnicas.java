@@ -137,10 +137,10 @@ public class Tecnicas implements Serializable {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int value = matrix[x][y];
-                if (value == 0) {
-                    result[x][y] = 1;
-                } else {
+                if (value == 255) {
                     result[x][y] = 0;
+                } else {
+                    result[x][y] = 255;
                 }
             }
         }
@@ -161,6 +161,14 @@ public class Tecnicas implements Serializable {
         imageResult.setRed(operationSingleMatrix(image.getRed(), value, operation));
         imageResult.setGreen(operationSingleMatrix(image.getGreen(), value, operation));
         imageResult.setBlue(operationSingleMatrix(image.getBlue(), value, operation));
+        return imageResult;
+    }
+
+    private static Imagem doOperationNOTInImage(Imagem image) {
+        Imagem imageResult = new Imagem();
+        imageResult.setRed(operationNOTSingleMatrix(image.getRed()));
+        imageResult.setGreen(operationNOTSingleMatrix(image.getGreen()));
+        imageResult.setBlue(operationNOTSingleMatrix(image.getBlue()));
         return imageResult;
     }
 
@@ -206,6 +214,10 @@ public class Tecnicas implements Serializable {
 
     public static Imagem operationXORImages(Imagem image1, Imagem image2) {
         return doOperationInImages(image1, image2, Operation.XOR);
+    }
+
+    public static Imagem operationNOTImage(Imagem image1) {
+        return doOperationNOTInImage(image1);
     }
 
 }
