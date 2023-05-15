@@ -117,20 +117,7 @@ public class Imagem implements Serializable {
 
     public BufferedImage getGrayImage() {
         int[][] grayMatrix = Tecnicas.rgbToGray(red, green, blue);
-        int width = getWidth();
-        int height = getHeight();
-
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int grayValue = grayMatrix[x][y];
-                // Setando valores do RED (16) GREEN (8) e BLUE
-                int rgbValue = (grayValue << 16) | (grayValue << 8) | grayValue;
-                image.setRGB(x, y, rgbValue);
-            }
-        }
-        return image;
+        return Tecnicas.getGrayImage(grayMatrix);
     }
 
     public BufferedImage getBinaryImage() {

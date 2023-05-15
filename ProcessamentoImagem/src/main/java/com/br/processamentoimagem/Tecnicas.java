@@ -1,6 +1,9 @@
 package com.br.processamentoimagem;
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -77,6 +80,22 @@ public class Tecnicas implements Serializable {
         return binaryMatrix;
     }
 
+    public static BufferedImage getGrayImage(int[][] grayMatrix) {
+        int width = grayMatrix.length;
+        int height = grayMatrix[0].length;
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int grayValue = grayMatrix[x][y];
+                // Setando valores do RED (16) GREEN (8) e BLUE
+                int rgbValue = (grayValue << 16) | (grayValue << 8) | grayValue;
+                image.setRGB(x, y, rgbValue);
+            }
+        }
+        return image;
+    }
+
     private static int[][] operationInTwoMatrixes(int[][] matrix1, int[][] matrix2, Integer coeficient, Operation operation) {
         int maxWidth = getMaxValue(matrix1.length, matrix2.length);
         int minWidth = getMinValue(matrix1.length, matrix2.length);
@@ -133,6 +152,91 @@ public class Tecnicas implements Serializable {
             }
         }
         return result;
+    }
+
+    private static int[][] filterSingleMatrix(int[][] matrix, Integer bounds, Filter filter) {
+        int width = matrix.length;
+        int height = matrix[0].length;
+        int[][] filteredMatrix = new int[width][height];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Integer[][] focus = getFocus(matrix, bounds, x, y);
+                filteredMatrix[x][y] = filter.getResult(focus);
+            }
+        }
+
+        return filteredMatrix;
+    }
+
+    private static Integer[][] getFocus(int[][] matrix, Integer bounds, int posX, int posY) {
+        int focusSize = bounds * 2 + 1;
+        Integer[][] focus = new Integer[focusSize][focusSize];
+
+        for (int y = 0; y < focusSize; y++) {
+            for (int x = 0; x < focusSize; x++) {
+                int posFocusX = posX + (x - bounds);
+                int posFocusY = posY + (y - bounds);
+                if (isPositionValid(matrix, posFocusX, posFocusY)) {
+                    focus[x][y] = matrix[posFocusX][posFocusY];
+                }
+            }
+        }
+        return focus;
+    }
+
+    private static boolean isPositionValid(int[][] matrix, int posX, int posY) {
+        int width = matrix.length;
+        int height = matrix[0].length;
+
+        return posX >= 0 && posX < width && posY >= 0 && posY < height;
+    }
+
+    public static Map<Integer, Integer> getImageHistogram(Imagem image) {
+        Map<Integer, Integer> histogram = new HashMap<>();
+        for (int i = 0; i < 256; i++) {
+            histogram.put(i, 0);
+        }
+        int[][] grayMatrix = rgbToGray(image.getRed(), image.getGreen(), image.getBlue());
+        int width = grayMatrix.length;
+        int height = grayMatrix[0].length;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixelValue = grayMatrix[x][y];
+                int histoCount = histogram.get(pixelValue);
+                histogram.put(pixelValue, histoCount + 1);
+            }
+        }
+        return histogram;
+    }
+
+    public static int[][] getEqualizedImage(Imagem image) {
+        Map<Integer, Integer> histogram = getImageHistogram(image);
+        int[][] grayMatrix = rgbToGray(image.getRed(), image.getGreen(), image.getBlue());
+
+        int width = grayMatrix.length;
+        int height = grayMatrix[0].length;
+        int[][] resultMatrix = new int[width][height];
+
+        int cfdMin = getCumulativeFrequency(histogram, 0);
+        int mxn = width * height;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int cfd = getCumulativeFrequency(histogram, grayMatrix[x][y]);
+                double result = Math.floor((cfd - cfdMin / mxn - cfdMin) * (255 - 1));
+                resultMatrix[x][y] = (int) Math.round(result);
+            }
+        }
+        return resultMatrix;
+    }
+
+    private static int getCumulativeFrequency(Map<Integer, Integer> histogram, int value) {
+        int count = 0;
+        for (int i = 0; i < value; i++) {
+            count += histogram.get(i);
+        }
+        return count;
     }
 
     private static Imagem doOperationInImages(Imagem image1, Imagem image2, Integer coeficient, Operation operation) {
@@ -216,4 +320,23 @@ public class Tecnicas implements Serializable {
         return doOperationInImage(image, null, Operation.NEGATIVE);
     }
 
+    public static Imagem applyFilterInImage(Imagem image, int bounds, Filter filter) {
+        Imagem imageResult = new Imagem();
+        imageResult.setRed(filterSingleMatrix(image.getRed(), bounds, filter));
+        imageResult.setGreen(filterSingleMatrix(image.getGreen(), bounds, filter));
+        imageResult.setBlue(filterSingleMatrix(image.getBlue(), bounds, filter));
+        return imageResult;
+    }
+
+    public static Imagem applyMaxFilter(Imagem image) {
+        return applyFilterInImage(image, 1, Filter.MAX);
+    }
+
+    public static Imagem applyMinFilter(Imagem image) {
+        return applyFilterInImage(image, 1, Filter.MIN);
+    }
+
+    public static Imagem applyMeanFilter(Imagem image) {
+        return applyFilterInImage(image, 1, Filter.MEAN);
+    }
 }

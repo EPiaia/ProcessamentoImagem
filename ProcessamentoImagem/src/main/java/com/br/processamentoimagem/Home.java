@@ -1,14 +1,16 @@
 package com.br.processamentoimagem;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -21,6 +23,7 @@ public class Home extends javax.swing.JFrame {
     private Imagem imgA;
     private Imagem imgB;
     private Imagem imgResult;
+    private Map<Integer, Integer> histogramaImgA = new HashMap<>();
 
     /**
      * Creates new form Home
@@ -76,6 +79,26 @@ public class Home extends javax.swing.JFrame {
         });
     }
 
+    public boolean validateImgA() {
+        if (imgA == null) {
+            JOptionPane.showMessageDialog(null, "Escolha a Imagem A");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateImgAAndB() {
+        if (!validateImgA()) {
+            return false;
+        }
+        if (imgB == null) {
+            JOptionPane.showMessageDialog(null, "Escolha a Imagem B");
+            return false;
+        }
+        return true;
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,6 +134,11 @@ public class Home extends javax.swing.JFrame {
         btnBlending = new javax.swing.JButton();
         tfBlending = new javax.swing.JTextField();
         btnNegativo = new javax.swing.JButton();
+        btnCalcularHistograma = new javax.swing.JButton();
+        btnEqualizarHistograma = new javax.swing.JButton();
+        btnMax = new javax.swing.JButton();
+        btnMin = new javax.swing.JButton();
+        btnMean = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -248,6 +276,41 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        btnCalcularHistograma.setText("Calcular Histograma");
+        btnCalcularHistograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularHistogramaActionPerformed(evt);
+            }
+        });
+
+        btnEqualizarHistograma.setText("Equalizar Histograma");
+        btnEqualizarHistograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEqualizarHistogramaActionPerformed(evt);
+            }
+        });
+
+        btnMax.setText("MAX");
+        btnMax.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMaxActionPerformed(evt);
+            }
+        });
+
+        btnMin.setText("MIN");
+        btnMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMinActionPerformed(evt);
+            }
+        });
+
+        btnMean.setText("MEAN");
+        btnMean.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMeanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -255,6 +318,9 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnMean, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 1316, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -268,23 +334,36 @@ public class Home extends javax.swing.JFrame {
                                         .addComponent(btnEscalaCinza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnMultiplicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tfMultiplicacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnAdicao, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tfAdicao)))
+                                    .addComponent(btnMax, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(btnMultiplicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(tfMultiplicacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(btnAdicao, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(tfAdicao)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(btnCalcularHistograma, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(btnBlending, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(tfBlending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(35, 35, 35)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnDivisao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnSubtracao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnNegativo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tfSubtracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tfDivisao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(btnEqualizarHistograma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnDivisao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnSubtracao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnNegativo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(tfSubtracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(tfDivisao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(btnMin, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -292,7 +371,7 @@ public class Home extends javax.swing.JFrame {
                                     .addComponent(labelImgB, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnCarregarImgB, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelResultado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -307,12 +386,7 @@ public class Home extends javax.swing.JFrame {
                                         .addComponent(btnOr, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnNot, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnBlending, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfBlending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,7 +432,17 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(btnBlending)
                     .addComponent(tfBlending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNegativo))
-                .addContainerGap(284, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMax)
+                    .addComponent(btnMin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnMean)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEqualizarHistograma)
+                    .addComponent(btnCalcularHistograma))
+                .addGap(153, 153, 153))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -382,10 +466,16 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCarregarImgAActionPerformed
 
     private void btnEscalaCinzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscalaCinzaActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
         labelResultado.setIcon(new ImageIcon(imgA.getGrayImage()));
     }//GEN-LAST:event_btnEscalaCinzaActionPerformed
 
     private void btnBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinarioActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
         labelResultado.setIcon(new ImageIcon(imgA.getBinaryImage()));
     }//GEN-LAST:event_btnBinarioActionPerformed
 
@@ -396,8 +486,15 @@ public class Home extends javax.swing.JFrame {
     private void btnAdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicaoActionPerformed
         String txt = tfAdicao.getText();
         if (txt == null || txt.isEmpty()) {
+            if (!validateImgAAndB()) {
+                return;
+            }
+
             labelResultado.setIcon(new ImageIcon(Tecnicas.sumImages(imgA, imgB).getMatrixImage()));
         } else {
+            if (!validateImgA()) {
+                return;
+            }
             int value = Integer.parseInt(txt);
             labelResultado.setIcon(new ImageIcon(Tecnicas.sumValue(imgA, value).getMatrixImage()));
         }
@@ -406,8 +503,15 @@ public class Home extends javax.swing.JFrame {
     private void btnSubtracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubtracaoActionPerformed
         String txt = tfSubtracao.getText();
         if (txt == null || txt.isEmpty()) {
+            if (!validateImgAAndB()) {
+                return;
+            }
+
             labelResultado.setIcon(new ImageIcon(Tecnicas.subtractImages(imgA, imgB).getMatrixImage()));
         } else {
+            if (!validateImgA()) {
+                return;
+            }
             int value = Integer.parseInt(txt);
             labelResultado.setIcon(new ImageIcon(Tecnicas.subtractValue(imgA, value).getMatrixImage()));
         }
@@ -416,8 +520,15 @@ public class Home extends javax.swing.JFrame {
     private void btnMultiplicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultiplicacaoActionPerformed
         String txt = tfMultiplicacao.getText();
         if (txt == null || txt.isEmpty()) {
+            if (!validateImgAAndB()) {
+                return;
+            }
+
             labelResultado.setIcon(new ImageIcon(Tecnicas.multiplyImages(imgA, imgB).getMatrixImage()));
         } else {
+            if (!validateImgA()) {
+                return;
+            }
             int value = Integer.parseInt(txt);
             labelResultado.setIcon(new ImageIcon(Tecnicas.multiplyValue(imgA, value).getMatrixImage()));
         }
@@ -426,8 +537,15 @@ public class Home extends javax.swing.JFrame {
     private void btnDivisaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivisaoActionPerformed
         String txt = tfDivisao.getText();
         if (txt == null || txt.isEmpty()) {
+            if (!validateImgAAndB()) {
+                return;
+            }
+
             labelResultado.setIcon(new ImageIcon(Tecnicas.divideImages(imgA, imgB).getMatrixImage()));
         } else {
+            if (!validateImgA()) {
+                return;
+            }
             int value = Integer.parseInt(txt);
             labelResultado.setIcon(new ImageIcon(Tecnicas.divideValue(imgA, value).getMatrixImage()));
         }
@@ -446,6 +564,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_tfDivisaoActionPerformed
 
     private void btnAndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAndActionPerformed
+        if (!validateImgAAndB()) {
+            return;
+        }
+
         Imagem imgABinario = new Imagem(imgA.getBinaryImage());
         Imagem imgBBinario = new Imagem(imgB.getBinaryImage());
 
@@ -454,6 +576,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAndActionPerformed
 
     private void btnXorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXorActionPerformed
+        if (!validateImgAAndB()) {
+            return;
+        }
+
         Imagem imgABinario = new Imagem(imgA.getBinaryImage());
         Imagem imgBBinario = new Imagem(imgB.getBinaryImage());
 
@@ -462,6 +588,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXorActionPerformed
 
     private void btnOrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrActionPerformed
+        if (!validateImgAAndB()) {
+            return;
+        }
+
         Imagem imgABinario = new Imagem(imgA.getBinaryImage());
         Imagem imgBBinario = new Imagem(imgB.getBinaryImage());
 
@@ -470,6 +600,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOrActionPerformed
 
     private void btnNotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
+
         Imagem imgABinario = new Imagem(imgA.getBinaryImage());
 
         Imagem imgResultado = Tecnicas.operationNOTImage(imgABinario);
@@ -477,6 +611,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNotActionPerformed
 
     private void btnBlendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlendingActionPerformed
+        if (!validateImgAAndB()) {
+            return;
+        }
+
         String txt = tfBlending.getText();
         if (txt == null || txt.isEmpty()) {
             labelResultado.setIcon(new ImageIcon(Tecnicas.blendImages(imgA, imgB, null).getMatrixImage()));
@@ -491,8 +629,55 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_tfBlendingActionPerformed
 
     private void btnNegativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNegativoActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
         labelResultado.setIcon(new ImageIcon(Tecnicas.negativeImage(imgA).getMatrixImage()));
     }//GEN-LAST:event_btnNegativoActionPerformed
+
+    private void btnCalcularHistogramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularHistogramaActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
+
+        this.histogramaImgA = Tecnicas.getImageHistogram(imgA);
+        System.out.println("Histograma: ");
+        for (int i = 0; i < 256; i++) {
+            System.out.println(i + ": " + histogramaImgA.get(i));
+        }
+    }//GEN-LAST:event_btnCalcularHistogramaActionPerformed
+
+    private void btnEqualizarHistogramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEqualizarHistogramaActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
+
+        labelResultado.setIcon(new ImageIcon(Tecnicas.getGrayImage(Tecnicas.getEqualizedImage(imgA))));
+    }//GEN-LAST:event_btnEqualizarHistogramaActionPerformed
+
+    private void btnMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaxActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
+
+        labelResultado.setIcon(new ImageIcon(Tecnicas.applyMaxFilter(imgA).getMatrixImage()));
+    }//GEN-LAST:event_btnMaxActionPerformed
+
+    private void btnMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
+
+        labelResultado.setIcon(new ImageIcon(Tecnicas.applyMinFilter(imgA).getMatrixImage()));
+    }//GEN-LAST:event_btnMinActionPerformed
+
+    private void btnMeanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeanActionPerformed
+        if (!validateImgA()) {
+            return;
+        }
+
+        labelResultado.setIcon(new ImageIcon(Tecnicas.applyMeanFilter(imgA).getMatrixImage()));
+    }//GEN-LAST:event_btnMeanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -534,10 +719,15 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton btnAnd;
     private javax.swing.JButton btnBinario;
     private javax.swing.JButton btnBlending;
+    private javax.swing.JButton btnCalcularHistograma;
     private javax.swing.JButton btnCarregarImgA;
     private javax.swing.JButton btnCarregarImgB;
     private javax.swing.JButton btnDivisao;
+    private javax.swing.JButton btnEqualizarHistograma;
     private javax.swing.JButton btnEscalaCinza;
+    private javax.swing.JButton btnMax;
+    private javax.swing.JButton btnMean;
+    private javax.swing.JButton btnMin;
     private javax.swing.JButton btnMultiplicacao;
     private javax.swing.JButton btnNegativo;
     private javax.swing.JButton btnNot;
