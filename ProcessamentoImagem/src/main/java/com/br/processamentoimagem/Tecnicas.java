@@ -328,15 +328,15 @@ public class Tecnicas implements Serializable {
         return imageResult;
     }
 
-    public static Imagem applyMaxFilter(Imagem image) {
-        return applyFilterInImage(image, 1, Filter.MAX);
+    public static Imagem applyMaxFilter(Imagem image, int filterLength) {
+        return applyFilterInImage(image, filterLength, Filter.MAX);
     }
 
-    public static Imagem applyMinFilter(Imagem image) {
-        return applyFilterInImage(image, 1, Filter.MIN);
+    public static Imagem applyMinFilter(Imagem image, int filterLength) {
+        return applyFilterInImage(image, filterLength, Filter.MIN);
     }
 
-    public static Imagem applyMeanFilter(Imagem image) {
-        return applyFilterInImage(image, 1, Filter.MEAN);
+    public static Imagem applyMeanFilter(Imagem image, int filterLength) {
+        return applyFilterInImage(image, filterLength, Filter.MEAN);
     }
 }

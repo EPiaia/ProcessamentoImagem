@@ -32,8 +32,12 @@ public enum Filter {
 
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                    if (focus[x][y] != null && (minValue == null || focus[x][y] < minValue)) {
-                        minValue = focus[x][y];
+                    Integer valorFoco = focus[x][y];
+                    if (valorFoco == null) {
+                        valorFoco = 0;
+                    }
+                    if (minValue == null || valorFoco < minValue) {
+                        minValue = valorFoco;
                     }
                 }
             }
