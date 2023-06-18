@@ -154,7 +154,7 @@ public class Tecnicas implements Serializable {
         return result;
     }
 
-    private static int[][] filterSingleMatrix(int[][] matrix, Integer bounds, Filter filter) {
+    private static int[][] filterSingleMatrix(int[][] matrix, Integer bounds, Filter filter, Double desvioPadrao) {
         int width = matrix.length;
         int height = matrix[0].length;
         int[][] filteredMatrix = new int[width][height];
@@ -162,7 +162,7 @@ public class Tecnicas implements Serializable {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Integer[][] focus = getFocus(matrix, bounds, x, y);
-                filteredMatrix[x][y] = filter.getResult(focus);
+                filteredMatrix[x][y] = filter.getResult(focus, desvioPadrao);
             }
         }
 
@@ -183,6 +183,30 @@ public class Tecnicas implements Serializable {
             }
         }
         return focus;
+    }
+
+    public static double[][] getKernelGaussiano(int tamanho, double desvioPadrao) {
+        double[][] kernel = new double[tamanho][tamanho];
+        double soma = 0.0;
+        int metadeTamanho = tamanho / 2;
+
+        for (int x = 0; x < tamanho; x++) {
+            for (int y = 0; y < tamanho; y++) {
+                int deslocamentoX = x - metadeTamanho;
+                int deslocamentoY = y - metadeTamanho;
+                double exponent = -((deslocamentoX * deslocamentoX + deslocamentoY * deslocamentoY) / (2.0 * desvioPadrao * desvioPadrao));
+                kernel[x][y] = (1.0 / (2.0 * Math.PI * desvioPadrao * desvioPadrao)) * Math.exp(exponent);
+                soma += kernel[x][y];
+            }
+        }
+
+        for (int x = 0; x < tamanho; x++) {
+            for (int y = 0; y < tamanho; y++) {
+                kernel[x][y] /= soma;
+            }
+        }
+
+        return kernel;
     }
 
     private static boolean isPositionValid(int[][] matrix, int posX, int posY) {
@@ -320,11 +344,19 @@ public class Tecnicas implements Serializable {
         return doOperationInImage(image, null, Operation.NEGATIVE);
     }
 
+    public static Imagem applyFilterInImage(Imagem image, int bounds, Filter filter, Double desvioPadrao) {
+        Imagem imageResult = new Imagem();
+        imageResult.setRed(filterSingleMatrix(image.getRed(), bounds, filter, desvioPadrao));
+        imageResult.setGreen(filterSingleMatrix(image.getGreen(), bounds, filter, desvioPadrao));
+        imageResult.setBlue(filterSingleMatrix(image.getBlue(), bounds, filter, desvioPadrao));
+        return imageResult;
+    }
+
     public static Imagem applyFilterInImage(Imagem image, int bounds, Filter filter) {
         Imagem imageResult = new Imagem();
-        imageResult.setRed(filterSingleMatrix(image.getRed(), bounds, filter));
-        imageResult.setGreen(filterSingleMatrix(image.getGreen(), bounds, filter));
-        imageResult.setBlue(filterSingleMatrix(image.getBlue(), bounds, filter));
+        imageResult.setRed(filterSingleMatrix(image.getRed(), bounds, filter, null));
+        imageResult.setGreen(filterSingleMatrix(image.getGreen(), bounds, filter, null));
+        imageResult.setBlue(filterSingleMatrix(image.getBlue(), bounds, filter, null));
         return imageResult;
     }
 
@@ -338,5 +370,17 @@ public class Tecnicas implements Serializable {
 
     public static Imagem applyMeanFilter(Imagem image, int filterLength) {
         return applyFilterInImage(image, filterLength, Filter.MEAN);
+    }
+
+    public static Imagem applyMeaningFilter(Imagem image, int filterLength) {
+        return applyFilterInImage(image, filterLength, Filter.MEANING);
+    }
+
+    public static Imagem applySmoothingFilter(Imagem image, int filterLength) {
+        return applyFilterInImage(image, filterLength, Filter.CONSERVATIVE_SMOOTH);
+    }
+
+    public static Imagem applyGaussianFilter(Imagem image, int filterLength, Double desvioPadrao) {
+        return applyFilterInImage(image, filterLength, Filter.CONSERVATIVE_SMOOTH, desvioPadrao);
     }
 }
